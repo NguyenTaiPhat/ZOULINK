@@ -7,7 +7,7 @@ export type LinkData = {
   lastAccessed: string | null;
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://zoulink.onrender.com';
 
 async function handleResponse<T>(res: Response): Promise<T> {
   const body = await res.json().catch(() => null);
