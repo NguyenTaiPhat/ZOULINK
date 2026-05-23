@@ -1,0 +1,14 @@
+{
+  "framework": "nextjs",
+  "outputDirectory": ".next",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "env": {
+    "NEXT_PUBLIC_API_URL": "@next_public_api_url",
+    "NEXT_PUBLIC_APP_URL": "@next_public_app_url",
+    "BACKEND_URL": "@backend_url"
+  },
+  "git": {
+    "deploymentEnabled": true
+  }
+}
