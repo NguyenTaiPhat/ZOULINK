@@ -26,13 +26,13 @@ export default function ResultCard({ shortUrl, originalUrl, clicks }: ResultCard
   };
 
   const truncate = (url: string, max = 55) =>
-    url.length > max ? url.slice(0, max) + '…' : url;
+    url.length > max ? url.slice(0, max) + '\u2026' : url;
 
   return (
     <div className="glass-card rounded-3xl p-6 space-y-5 animate-scale-in" style={{ animationFillMode: 'both' }}>
       <div className="flex items-center gap-2">
-        <span className="h-2 w-2 rounded-full bg-neon-pink" style={{ boxShadow: '0 0 8px #ff1f71' }} />
-        <span className="text-xs font-medium tracking-widest uppercase text-soft-pink/50" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+        <span className="h-2 w-2 rounded-full bg-neon-pink animate-pulse-dot" style={{ boxShadow: '0 0 8px #ff1f71' }} />
+        <span className="font-dm text-xs font-medium tracking-widest uppercase text-soft-pink/45">
           Link Ready
         </span>
       </div>
@@ -41,15 +41,23 @@ export default function ResultCard({ shortUrl, originalUrl, clicks }: ResultCard
         <div
           className="flex-1 rounded-xl px-4 py-3.5 min-w-0"
           style={{
-            background: 'rgba(255,31,113,0.06)',
-            border: '1px solid rgba(255,31,113,0.2)',
+            background: 'rgba(255,31,113,0.05)',
+            border: '1px solid rgba(255,31,113,0.18)',
           }}
         >
-          <a href={shortUrl} target="_blank" rel="noopener noreferrer" className="text-base font-semibold text-glow-pink hover:text-soft-pink transition-colors truncate block" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <a
+            href={shortUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-dm text-base font-semibold text-glow-pink hover:text-soft-pink transition-colors truncate block"
+          >
             {shortUrl}
           </a>
         </div>
-        <button onClick={handleCopy} className={`copy-btn px-5 py-3.5 rounded-xl flex items-center gap-2 shrink-0 ${copied ? 'copied' : ''}`}>
+        <button
+          onClick={handleCopy}
+          className={`copy-btn px-5 py-3.5 rounded-xl font-dm text-sm flex items-center gap-2 shrink-0 ${copied ? 'copied' : ''}`}
+        >
           {copied ? (
             <>
               <CheckIcon />
@@ -66,18 +74,18 @@ export default function ResultCard({ shortUrl, originalUrl, clicks }: ResultCard
 
       <div className="flex items-start gap-2.5">
         <LinkIcon />
-        <p className="text-xs text-soft-pink/35 leading-relaxed break-all">{truncate(originalUrl)}</p>
+        <p className="font-dm text-xs text-soft-pink/30 leading-relaxed break-all">{truncate(originalUrl)}</p>
       </div>
 
-      <div className="flex items-center justify-between pt-1 border-t border-neon-pink/[0.08]">
+      <div className="flex items-center justify-between pt-3 border-t border-neon-pink/[0.08]">
         <div className="flex items-center gap-2">
-          <span className="stat-badge flex items-center gap-1.5">
+          <span className="stat-badge font-dm flex items-center gap-1.5">
             <EyeIcon />
             {clicks} click{clicks !== 1 ? 's' : ''}
           </span>
         </div>
-        <Link href="/analytics" className="text-xs text-soft-pink/40 hover:text-soft-pink/70 transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          View analytics →
+        <Link href="/analytics" className="font-dm text-xs text-soft-pink/35 hover:text-soft-pink/65 transition-colors">
+          View analytics &rarr;
         </Link>
       </div>
     </div>
@@ -103,7 +111,7 @@ function CheckIcon() {
 
 function LinkIcon() {
   return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,179,204,0.35)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 mt-0.5">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,179,204,0.3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 mt-0.5">
       <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
       <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
     </svg>

@@ -1,18 +1,26 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Toaster } from 'react-hot-toast';
+import ToasterProvider from '@/components/ToasterProvider';
 
 export const metadata: Metadata = {
-  title: 'ZOUI Link',
+  title: 'ZOUI Link — Shorten. Share. Shine.',
   description: 'Pink cyber URL shortener with instant link analytics.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>
         {children}
-        <Toaster position="top-center" />
+        <ToasterProvider />
       </body>
     </html>
   );
