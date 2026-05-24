@@ -24,7 +24,7 @@ function formatRelative(dateStr: string | null) {
 }
 
 function truncate(str: string, max = 42) {
-  return str.length > max ? str.slice(0, max) + '…' : str;
+  return str.length > max ? str.slice(0, max) + '\u2026' : str;
 }
 
 async function AnalyticsContent() {
@@ -44,72 +44,68 @@ async function AnalyticsContent() {
   if (error) {
     return (
       <div className="glass-card rounded-3xl p-8 text-center space-y-3">
-        <p className="text-soft-pink/50 text-sm">{error}</p>
-        <p className="text-soft-pink/30 text-xs">Make sure the backend is running on port 3001.</p>
+        <p className="font-dm text-soft-pink/50 text-sm">{error}</p>
+        <p className="font-dm text-soft-pink/25 text-xs">Make sure the backend is running on port 3001.</p>
       </div>
     );
   }
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 mb-8">
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 mb-8">
         {[
           { label: 'Total Links', value: totalLinks },
           { label: 'Total Clicks', value: totalClicks },
           {
             label: 'Top Performer',
-            value: topLink ? `/${topLink.slug}` : '—',
+            value: topLink ? `/${topLink.slug}` : '\u2014',
             mono: true,
           },
         ].map((stat) => (
           <div key={stat.label} className="glass-card rounded-2xl p-5 text-center space-y-1.5">
             <p
-              className={`font-bold text-white/90 ${stat.mono ? 'text-lg text-neon-pink' : 'text-2xl'}`}
-              style={{
-                fontFamily: stat.mono ? "'DM Sans', monospace" : "'Syne', sans-serif",
-              }}
+              className={`font-bold text-white/90 ${stat.mono ? 'text-lg text-neon-pink font-dm' : 'text-2xl font-syne'}`}
             >
               {typeof stat.value === 'number' ? stat.value.toLocaleString() : stat.value}
             </p>
-            <p className="text-xs text-soft-pink/40 tracking-wide uppercase" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            <p className="font-dm text-xs text-soft-pink/35 tracking-wide uppercase">
               {stat.label}
             </p>
           </div>
         ))}
       </div>
 
+      {/* Links Table */}
       {links.length === 0 ? (
         <div className="glass-card rounded-3xl p-12 text-center space-y-3">
-          <div className="text-4xl mb-2">🌸</div>
-          <p className="text-white/60" style={{ fontFamily: "'Syne', sans-serif" }}>
+          <p className="font-syne text-white/60">
             No links yet
           </p>
-          <p className="text-soft-pink/35 text-sm" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="font-dm text-soft-pink/30 text-sm">
             Go ahead and shorten your first URL!
           </p>
           <Link
             href="/"
-            className="inline-block mt-3 px-6 py-2.5 rounded-xl text-sm font-medium"
+            className="inline-block mt-3 px-6 py-2.5 rounded-xl font-dm text-sm font-medium text-neon-pink"
             style={{
-              background: 'rgba(255,31,113,0.12)',
-              border: '1px solid rgba(255,31,113,0.25)',
-              color: '#ff6fa8',
-              fontFamily: "'DM Sans', sans-serif",
+              background: 'rgba(255,31,113,0.1)',
+              border: '1px solid rgba(255,31,113,0.2)',
             }}
           >
-            Shorten a URL →
+            Shorten a URL &rarr;
           </Link>
         </div>
       ) : (
         <div className="glass-card rounded-3xl overflow-hidden">
+          {/* Desktop header */}
           <div
-            className="grid px-6 py-3.5 text-xs font-medium tracking-widest uppercase"
+            className="hidden md:grid px-6 py-3.5 font-dm text-xs font-medium tracking-widest uppercase"
             style={{
               gridTemplateColumns: '1.5fr 2.5fr 80px 120px',
               background: 'rgba(255,31,113,0.04)',
-              borderBottom: '1px solid rgba(255,31,113,0.1)',
-              color: 'rgba(255,179,204,0.4)',
-              fontFamily: "'DM Sans', sans-serif",
+              borderBottom: '1px solid rgba(255,31,113,0.08)',
+              color: 'rgba(255,179,204,0.35)',
             }}
           >
             <span>Short URL</span>
@@ -118,37 +114,55 @@ async function AnalyticsContent() {
             <span className="text-right">Last Visited</span>
           </div>
 
+          {/* Desktop rows */}
           {links.map((link) => (
-            <div
-              key={link.id}
-              className="link-row grid px-6 py-4 items-center"
-              style={{ gridTemplateColumns: '1.5fr 2.5fr 80px 120px' }}
-            >
-              <a
-                href={`/${link.slug}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-medium text-glow-pink hover:text-soft-pink transition-colors truncate"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
+            <div key={link.id}>
+              {/* Desktop view */}
+              <div
+                className="link-row hidden md:grid px-6 py-4 items-center"
+                style={{ gridTemplateColumns: '1.5fr 2.5fr 80px 120px' }}
               >
-                /{link.slug}
-              </a>
-              <a
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-soft-pink/35 hover:text-soft-pink/60 transition-colors truncate pr-4"
-                title={link.url}
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
-              >
-                {truncate(link.url)}
-              </a>
-              <div className="flex justify-center">
-                <span className="stat-badge">{link.clicks.toLocaleString()}</span>
+                <a
+                  href={`/${link.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-dm text-sm font-medium text-glow-pink hover:text-soft-pink transition-colors truncate"
+                >
+                  /{link.slug}
+                </a>
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-dm text-xs text-soft-pink/30 hover:text-soft-pink/55 transition-colors truncate pr-4"
+                  title={link.url}
+                >
+                  {truncate(link.url)}
+                </a>
+                <div className="flex justify-center">
+                  <span className="stat-badge font-dm">{link.clicks.toLocaleString()}</span>
+                </div>
+                <p className="font-dm text-xs text-soft-pink/25 text-right">
+                  {formatRelative(link.lastAccessed)}
+                </p>
               </div>
-              <p className="text-xs text-soft-pink/30 text-right" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                {formatRelative(link.lastAccessed)}
-              </p>
+
+              {/* Mobile view */}
+              <div className="link-row md:hidden px-5 py-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <a
+                    href={`/${link.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-dm text-sm font-medium text-glow-pink hover:text-soft-pink transition-colors truncate"
+                  >
+                    /{link.slug}
+                  </a>
+                  <span className="stat-badge font-dm text-xs">{link.clicks.toLocaleString()}</span>
+                </div>
+                <p className="font-dm text-xs text-soft-pink/25 truncate">{truncate(link.url, 50)}</p>
+                <p className="font-dm text-xs text-soft-pink/20">{formatRelative(link.lastAccessed)}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -161,13 +175,13 @@ export default function AnalyticsPage() {
   return (
     <main className="relative min-h-screen flex flex-col overflow-hidden" style={{ background: '#070011' }}>
       <div
-        className="orb animate-glow-pulse"
+        className="orb animate-glow-pulse-no-translate"
         style={{
           width: '500px',
           height: '500px',
           top: '-150px',
           right: '-100px',
-          background: 'radial-gradient(circle, rgba(255,31,113,0.12) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(255,31,113,0.1) 0%, transparent 70%)',
         }}
       />
       <div
@@ -177,8 +191,18 @@ export default function AnalyticsPage() {
           height: '300px',
           bottom: '10%',
           left: '-80px',
-          background: 'radial-gradient(circle, rgba(255,111,168,0.1) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(255,111,168,0.08) 0%, transparent 70%)',
           animationDelay: '2s',
+        }}
+      />
+
+      {/* Noise overlay */}
+      <div
+        className="pointer-events-none fixed inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+          backgroundSize: '200px 200px',
         }}
       />
 
@@ -188,13 +212,20 @@ export default function AnalyticsPage() {
 
       <div className="relative z-10 flex-1 px-4 py-8 md:py-12 max-w-4xl mx-auto w-full">
         <div className="mb-10 space-y-2 animate-slide-up" style={{ animationFillMode: 'both' }}>
-          <h1 className="text-3xl md:text-4xl font-bold text-white/90" style={{ fontFamily: "'Syne', sans-serif", letterSpacing: '-0.02em' }}>
+          <h1 className="font-syne text-3xl md:text-4xl font-bold text-white/90" style={{ letterSpacing: '-0.02em' }}>
             Link{' '}
-            <span style={{ background: 'linear-gradient(135deg, #ff1f71, #ff6fa8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            <span
+              style={{
+                background: 'linear-gradient(135deg, #ff1f71, #ff6fa8)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
               Analytics
             </span>
           </h1>
-          <p className="text-sm text-soft-pink/40" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="font-dm text-sm text-soft-pink/35">
             All shortened links and their performance metrics.
           </p>
         </div>
@@ -205,8 +236,8 @@ export default function AnalyticsPage() {
       </div>
 
       <footer className="relative z-10 py-8 text-center">
-        <p className="text-xs text-soft-pink/20" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          ZOUI Link · {new Date().getFullYear()}
+        <p className="font-dm text-xs text-soft-pink/20">
+          ZOUI Link &middot; {new Date().getFullYear()}
         </p>
       </footer>
     </main>
